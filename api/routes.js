@@ -1,7 +1,11 @@
 'use strict';
 module.exports = function(app) {
-  var cpiCtrl = require('./controllers/cpiController')
+  var home = require('./home');
+  var cpiCtrl = require('./controllers/cpiController');
   var gdpCtrl = require('./controllers/gdpCotroller');
+
+  //Home Routes
+  app.route('/').get(home.get);
 
   // CPI Routes
   app.route('/cpi')
@@ -14,12 +18,9 @@ module.exports = function(app) {
 
   // GDP Routes
   app.route('/gdp')
-  .get(gdpCtrl.get);
-
+    .get(gdpCtrl.get);
   app.route('/gdp/:gdpId&:gdpTime')
     .get(gdpCtrl.detail)
-
-
   app.route('/gdp/:dataId')
     .post(gdpCtrl.store)
     .delete(gdpCtrl.delete);

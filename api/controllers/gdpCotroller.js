@@ -26,7 +26,7 @@ module.exports = {
         let ii = req.params.cpiTime;
         const time =new Date()
         new Date (time.setMonth(time.getMonth()-ii))
-        let dataPeriod = gdpDb.filter(items => items.period === select[i] &&  new Date(items.date) >= time);
+        let dataPeriod = gdpDb.filter(items => items.name === select[i] &&  new Date(items.date) >= time);
         res.json({dataPeriod : dataPeriod})
     },
     //post data lên bảng tùy chỉnh đồ thị

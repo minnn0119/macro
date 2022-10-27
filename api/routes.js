@@ -10,8 +10,10 @@ module.exports = function(app) {
   // CPI Routes
   app.route('/cpi')
     .get(cpiCtrl.get);
-  app.route('/cpi/:cpiId&:cpiTime')
-    .get(cpiCtrl.detail)
+  app.route('/cpi/:page')
+    .get(cpiCtrl.paging)
+  app.route('/cpisearch')
+    .get(gdpCtrl.search)
   app.route('/cpi/:dataId')
     .post(cpiCtrl.store)
     .delete(cpiCtrl.delete);
@@ -19,8 +21,10 @@ module.exports = function(app) {
   // GDP Routes
   app.route('/gdp')
     .get(gdpCtrl.get);
-  app.route('/gdp/:gdpId&:gdpTime')
-    .get(gdpCtrl.detail)
+  app.route('/gdp/:page')
+    .get(gdpCtrl.paging)
+  app.route('/gdpsearch')
+    .get(gdpCtrl.search)
   app.route('/gdp/:dataId')
     .post(gdpCtrl.store)
     .delete(gdpCtrl.delete);

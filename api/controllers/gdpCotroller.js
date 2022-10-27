@@ -3,31 +3,29 @@
 const db = require('../db')
 
 const gdpDb = db.GDP
-const table = 'cpi'
-
+const table = 'gdp'
 const dataPost = []
 module.exports = {
 
     //get all data gdp
     get: (req, res)=> {
-        const data =gdpDb
-        res.json({data : data})
-        
-    },
-    //get data chart use Id and time sort
-    detail: (req, res) => {       
-        const select =[
-            'value',
-            'specty'
-        ];
-        let i = req.params.cpiId -1;
-        console.log(req.params)
+        let i = req.query.id ;
         //ii là số tháng vd: 3M->i=3, 1U-> i=12, all->1200
-        let ii = req.params.cpiTime;
+        let ii = req.query.time;
         const time =new Date()
         new Date (time.setMonth(time.getMonth()-ii))
-        let dataPeriod = gdpDb.filter(items => items.name === select[i] &&  new Date(items.date) >= time);
-        res.json({dataPeriod : dataPeriod})
+        if(req.query.id && req.query.time ){
+            let data = gdpDb.filter(items => items.name === i &&  new Date(items.date) >= time);
+            res.json({data : data})
+        }
+        if(req.query.id || req.query.time ){
+            let data = gdpDb.filter(items => items.name === i ||  new Date(items.date) >= time);
+            res.json({data : data})
+        }
+        else {
+            res.json({data : gdpDb})
+        }
+        
     },
     //post data lên bảng tùy chỉnh đồ thị
     store: (req, res) => {
@@ -43,5 +41,24 @@ module.exports = {
         let index = dataPost.indexOf(param)
         dataPost.splice(index,1);
         res.send(dataPost)
+    },
+
+    search: (req,res) => {
+        // var id = req.p.id;
+	    // var data1 = posts.filter(function(item){
+        //     return item.id === parseInt(id)
+        // });
+        var id = req.query.id;
+        var type = req.query.type;
+        var data = gdpDb.filter(items => items.type === type ||items.name === id ) ;
+        res.send(data) 
+    },
+    paging: (req,res) => {
+        let perPage = 10; 
+        let page = parseInt(req.params) || 1; 
+        var start =(page-1)*perPage
+        var end = page *perPage
+       res.send(gdpDb.slice(start,end)) 
     }
+
 }

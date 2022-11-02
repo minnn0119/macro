@@ -26,7 +26,6 @@ module.exports = {
         else {
             res.json({data : cpiDb})
         }
-        
     },
     //post data lên bảng tùy chỉnh đồ thị
     store: (req, res) => {
@@ -44,10 +43,7 @@ module.exports = {
         res.send(dataPost)
     },
     search: (req,res) => {
-        // var id = req.p.id;
-	    // var data1 = posts.filter(function(item){
-        //     return item.id === parseInt(id)
-        // });
+        
         var id = req.query.id;
         var type = req.query.type;
         var data = cpiDb.filter(items => items.type === type ||items.period === id ) ;

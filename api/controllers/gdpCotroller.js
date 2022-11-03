@@ -11,23 +11,37 @@ module.exports = {
     get: (req, res)=> {
         res.json({data : sData})
     },
-    detail: (req,res)=>{
-        
+    detail: (req,res)=>{  
         let i = req.query.id ;
         //ii là số tháng vd: 3M->i=3, 1U-> i=12, all->1200
         let ii = req.query.time;
         const time =new Date()
         let aa = req.params.type
+        var search = req.query.search
+        var paging = req.query.paging
         new Date (time.setMonth(time.getMonth()-ii))
         if(aa=='gdp'){
             const sData = db.GDP
-            if(req.query.id && req.query.time ){
+            if(i && ii ){
                 let data = sData.filter(items => items.name === i &&  new Date(items.date) >= time);
-                res.json({data : data})
+                res.status(200).json({data : data})
             }
-            if(req.query.id || req.query.time ){
+            if(i || ii ){
                 let data = sData.filter(items => items.name === i ||  new Date(items.date) >= time);
-                res.json({data : data})
+                res.status(200).json({data : data})
+            }
+            if(search){
+                var result = sData.filter( (items) => {
+                    return items.type.toLowerCase().indexOf(search.toLowerCase()) !== -1
+                })
+                res.status(200).json({data : result})
+            }
+            if(paging){
+                let perPage = 10; 
+                let page = parseInt(req.params) || 1; 
+                var start =(page-1)*perPage
+                var end = page *perPage
+                res.send(sData.slice(start,end)) 
             }
             else {
                 res.json({data : sData})
@@ -35,13 +49,26 @@ module.exports = {
         }
         if(aa=='cpi'){
             const sData = db.CPI
-            if(req.query.id && req.query.time ){
+            if(i && ii ){
                 let data = sData.filter(items => items.name === i &&  new Date(items.date) >= time);
                 res.json({data : data})
             }
-            if(req.query.id || req.query.time ){
+            if(i || ii ){
                 let data = sData.filter(items => items.name === i ||  new Date(items.date) >= time);
                 res.json({data : data})
+            }
+            if(search){
+                var result = sData.filter( (items) => {
+                    return items.type.toLowerCase().indexOf(search.toLowerCase()) !== -1
+                })
+                res.json({data : result})
+            }
+            if(paging){
+                let perPage = 10; 
+                let page = parseInt(req.params) || 1; 
+                var start =(page-1)*perPage
+                var end = page *perPage
+                res.send(sData.slice(start,end)) 
             }
             else {
                 res.json({data : sData})
@@ -67,42 +94,6 @@ module.exports = {
         dataPost.splice(index,1);
         res.send(dataPost)
     },
-    search: (req,res) => {
-        let aa = req.params.type
-        console.log(req.query)
-        if(aa=='gdp'){
-            const sData = db.GDP
-            var id = req.query.id;
-            var type = req.query.type;
-            var data = sData.filter(items => items.type === type ||items.name === id) ;
-            res.send(data) 
-        }
-        if(aa=='cpi'){
-            const sData = db.CPI
-            var id = req.query.id;
-            var type = req.query.type;
-            var data = sData.filter(items => items.type === type ||items.period === id ) ;
-            res.send(data) 
-        }
-    },
-    paging: (req,res) => {
-        let aa = req.params.type
-        if(aa=='gdp'){
-            const sData = db.GDP
-            let perPage = 10; 
-            let page = parseInt(req.params) || 1; 
-            var start =(page-1)*perPage
-            var end = page *perPage
-            res.send(sData.slice(start,end)) 
-        }
-        if(aa=='cpi'){
-            const sData = db.CPI
-            let perPage = 10; 
-            let page = parseInt(req.params) || 1; 
-            var start =(page-1)*perPage
-            var end = page *perPage
-            res.send(sData.slice(start,end)) 
-        }
-    }
+    
 
 }

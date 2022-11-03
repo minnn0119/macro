@@ -10,14 +10,10 @@ module.exports = function(app) {
 
   // GDP Routes
   app.route('/macro')
-    .get(gdpCtrl.get);
+    .get(gdpCtrl.get)
   app.route('/macro/:type')
-    .get(gdpCtrl.detail);
-  app.route('/macro/:type/search')
-    .get(gdpCtrl.search)
-  app.route('/macro/:type/:page')
-    .get(gdpCtrl.paging)
-  app.route('/macro/:type/:dataId')
+    .get(gdpCtrl.detail)
+  app.route('/macro/:type')
     .post(gdpCtrl.store)
     .delete(gdpCtrl.delete);
     

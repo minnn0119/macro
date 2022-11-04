@@ -9,14 +9,11 @@ module.exports = {
 
     //get all data gdp
     get: (req, res)=> {
-        res.json({data : sData})
-    },
-    detail: (req,res)=>{  
         let i = req.query.id ;
         //ii là số tháng vd: 3M->i=3, 1U-> i=12, all->1200
         let ii = req.query.time;
         const time =new Date()
-        let aa = req.params.type
+        let aa = req.query.type
         var search = req.query.search
         var paging = req.query.paging
         new Date (time.setMonth(time.getMonth()-ii))
@@ -50,11 +47,11 @@ module.exports = {
         if(aa=='cpi'){
             const sData = db.CPI
             if(i && ii ){
-                let data = sData.filter(items => items.name === i &&  new Date(items.date) >= time);
+                let data = sData.filter(items => items.period === i &&  new Date(items.date) >= time);
                 res.json({data : data})
             }
             if(i || ii ){
-                let data = sData.filter(items => items.name === i ||  new Date(items.date) >= time);
+                let data = sData.filter(items => items.period === i ||  new Date(items.date) >= time);
                 res.json({data : data})
             }
             if(search){

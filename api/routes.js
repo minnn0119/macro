@@ -11,12 +11,8 @@ module.exports = function(app) {
   // GDP Routes
   app.route('/macro')
     .get(gdpCtrl.get)
-  app.route('/macro/:type')
-    .get(gdpCtrl.detail)
-  app.route('/macro/:type')
     .post(gdpCtrl.store)
     .delete(gdpCtrl.delete);
-    
 };
 
 

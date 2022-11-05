@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const cors = require('cors')
 require('dotenv').load()
 const port = process.env.PORT || 3000
 
@@ -10,6 +11,10 @@ app.use(bodyParser.json())
 
 let routes = require('./api/routes') //importing route
 routes(app)
+
+app.use(cors ({
+    origin: '*'
+}))
 
 app.use(function(req, res) {
     res.status(404).send({url: req.originalUrl + ' not found'})

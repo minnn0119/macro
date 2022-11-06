@@ -8,13 +8,24 @@ const port = process.env.PORT || 3000
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+const corsOpts = {
+    origin: '*',
+  
+    methods: [
+      'GET',
+      'POST',
+      'DELETE',
+    ],
+  
+    allowedHeaders: [
+      'Content-Type',
+    ],
+  };
 
 let routes = require('./api/routes') //importing route
 routes(app)
 
-app.use(cors ({
-    origin: '*'
-}))
+app.use(cors(corsOpts));
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');

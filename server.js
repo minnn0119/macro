@@ -25,7 +25,7 @@ const corsOpts = {
 let routes = require('./api/routes') //importing route
 routes(app)
 
-app.use(cors(corsOpts));
+//app.use(cors(corsOpts));
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
